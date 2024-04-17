@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask & Echarts Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js" integrity="sha512-ppWbHq6q2f7HAwS481w6qikuC0XEeBnmkRg6KWnWg3zSIbJwWWBgsCDMAxzSB7SVqXzWwSYQ2s8TSJKjnaikMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                font-weight: bold;
+                color: #030303;
+                background-color: #c4f7b4;
+                
+            }
+
+            /* 自定义按钮样式 */
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #0e4cf7;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px;
+                border: none;
+                transition: background-color 0.3s ease;
+            }
+
+            /* 按钮悬停样式 */
+            .btn:hover {
+                background-color: #140b49;
+            }
+        </style>
+</head>
+<body >
+
+    <h1>Echarts Demo</h1>
+    <div id="main" style="width: 1000px;height: 600px;border-style: dashed;">
+        <center>預計這裡會顯示圖表</center>
+    </div>
+
+
+    <form id="lastWeek" method="post" action="/update_counter">
+        <input type="hidden" name="currentDate" value=-1>
+        <button class="btn" type="submit">上一天</button>
+
+    </form>
+    
+    <form id="lastWeek" method="post" action="/update_counter">
+        <input type="hidden" name="currentDate" value="1">
+        <button class="btn" type="submit"  >下一天</button>
+    </form>
+
+    <script>
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+        var data = {{data|tojson}};
+        var startDate = new Date();
+
+    
+
+        option = {
+            xAxis: {
+                type: 'category',
+                data: data.map(item => item.name),
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    data: data.map(item => item.value),
+                    type: 'bar'
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+
+    </script>
+    
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts Bar Chart with Link</title>
+    <!-- 引入 ECharts 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 定义一个具有一定宽高的 div 作为容器 -->
+    <div id="chart" style="width: 600px; height: 400px;"></div>
+    
+    <script type="text/javascript">
+        // 初始化 ECharts 实例
+        var chart = echarts.init(document.getElementById('chart'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'Bar Chart with Link'
+            },
+            tooltip: {},
+            xAxis: {
+                data: ["A", "B", "C", "D", "E"]
+            },
+            yAxis: {},
+            series: [{
+                name: 'Series',
+                type: 'bar',
+                data: [5, 20, 36, 10, 75]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表
+        chart.setOption(option);
+
+        // 添加点击事件监听器
+        chart.on('click', function(params) {
+            // 判断点击的是第三个柱子
+            if (params.dataIndex === 2) {
+                // 在新窗口中打开链接
+                window.open('https://www.example.com');
+            }
+        });
+    </script>
+</body>
+</html>

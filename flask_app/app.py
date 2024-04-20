@@ -3,7 +3,13 @@ from flask import Flask, render_template, jsonify, request, redirect
 from datetime import datetime, timedelta
 import mysql.connector
 import json
-
+# 連接到 MySQL 資料庫
+db = mysql.connector.connect(
+    host="",
+    user="",
+    password="",
+    database=""
+)
 app = Flask(__name__)
 
 timetable = {}
@@ -36,13 +42,7 @@ def convert_to_timetable(data):
 
 app = Flask(__name__)
 
-# 連接到 MySQL 資料庫
-db = mysql.connector.connect(
-    host="34.81.183.159",
-    user="lab403",
-    password="66386638",
-    database="fishDB"
-)
+
 counter = 0
 
 cursor = db.cursor()
@@ -103,10 +103,10 @@ def show_feed_schedule():
             print("ERR:",e)
             try:
                 db = mysql.connector.connect(
-                    host="34.81.183.159",
-                    user="lab403",
-                    password="66386638",
-                    database="fishDB"
+                    host="",
+                    user="",
+                    password="",
+                    database=""
                 )
                 cursor = db.cursor()
             except Exception as e:    

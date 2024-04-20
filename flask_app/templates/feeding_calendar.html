@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+
+    </style>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask & Echarts Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js" integrity="sha512-ppWbHq6q2f7HAwS481w6qikuC0XEeBnmkRg6KWnWg3zSIbJwWWBgsCDMAxzSB7SVqXzWwSYQ2s8TSJKjnaikMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>課表</title>
+    <style>
+
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                font-weight: bold;
+                color: #030303;
+                background-color: #c4f7b4;
+                
+            }
+
+            /* 自定义按钮样式 */
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #0e4cf7;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px;
+                border: none;
+                transition: background-color 0.3s ease;
+            }
+
+            /* 按钮悬停样式 */
+            .btn:hover {
+                background-color: #140b49;
+            }
+            .btn {
+                display: inline-block; /* 或者 inline 或者 inline-flex */
+            }
+
+                        /* 在這裡添加 CSS 樣式以美化功課表 */
+            /* 這裡只是一個基本範例，你可以根據自己的需求進行調整 */
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th, td {
+                border: 1px solid #010003;
+                text-align: left;
+                padding: 8px;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            /* 餵食紀錄背景顏色 */
+            table {
+                width: 1000px;height: 600px;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: center;
+            }
+            td {
+                
+                background-color: #c4f7b4;
+            }
+            /* 條件樣式：如果單元格內容為"O"，則設置背景顏色為藍色 */
+            td[data-value="O"] {
+                background-color: rgb(0, 195, 255);
+            }
+        </style>
+</head>
+
+<body >
+
+        <h2>餵食紀錄表</h2>
+        <form id="lastWeek" method="post" action="/update_counter">
+            <input type="hidden" name="currentDate" value=-1>
+            <button class="btn" type="submit">上一天</button>
+    
+        </form>
+        
+        <form id="lastWeek" method="post" action="/update_counter">
+            <input type="hidden" name="currentDate" value="1">
+            <button class="btn" type="submit"  >下一天</button>
+        </form>
+        
+<table>
+    <tr>
+        <th>時間</th>
+        {% for date in timetable %}
+            <th>{{ date }}</th>
+        {% endfor %}
+    </tr>
+    {% for time in ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'] %}
+        <tr>
+            <td>{{ time }}</td>
+            {% for date, subjects in timetable.items() %}
+                {% set subject = subjects.get(time, '') %}
+                {% if subject == '' %}
+                    <td data-value="">{{ subject }}</td>
+                {% else %}
+                    <td data-value="{{ subject }}">{{ subject }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+
+    <h1>當日餵食時長</h1>
+    <div id="main" style="width: 1000px;height: 600px;border-style: dashed;">
+        <center>預計這裡會顯示圖表</center>
+    </div>
+
+    <form id="lastWeek" method="post" action="/update_counter">
+        <input type="hidden" name="currentDate" value=-1>
+        <button class="btn" type="submit">上一天</button>
+
+    </form>
+    
+    <form id="lastWeek" method="post" action="/update_counter">
+        <input type="hidden" name="currentDate" value="1">
+        <button class="btn" type="submit"  >下一天</button>
+    </form>
+
+
+    <script>
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+        var data = {{data|tojson}};
+        var startDate = new Date();
+
+    
+
+        option = {
+            xAxis: {
+                type: 'category',
+                data: data.map(item => item.name),
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    data: data.map(item => item.value),
+                    type: 'bar'
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+
+    </script>
+    
+</body>
+</html>
+
+
+

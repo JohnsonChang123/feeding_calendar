@@ -7,3 +7,7 @@
 
 架設於本機時請連線 :
 http://127.0.0.1:5000/feeding_calendar
+
+![image](https://github.com/JohnsonChang123/feeding_calendar/assets/62070342/6f4fd65d-f918-4263-ad97-c5ed499f54f3)
+![image](https://github.com/JohnsonChang123/feeding_calendar/assets/62070342/1bdaa35b-44b0-4677-937b-7cfa0ab2b8fc)
+
